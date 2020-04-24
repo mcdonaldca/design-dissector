@@ -1,13 +1,20 @@
-$(window).on("load", function() {
-  $("#upload").on('change', function() {
-    if (this.files && this.files[0]) {
-      var image = $("#original");
-      image.attr("src", URL.createObjectURL(this.files[0]));
-      image.on("load", onImageLoad);
-    }
-  });
-});
+function Dissector() {
+  this.originalImage = $("#original");
+  this.uploadInput = $("#upload");
+  this.uploadInput.on("change", this.imageUploaded.bind(this));
+}
 
-function onImageLoad() { 
+
+Dissector.prototype.imageUploaded = function() {
+  var uploader = this.uploadInput.get()[0];
+  if (uploader.files && uploader.files[0]) {
+    var uploadedImage = uploader.files[0];
+    this.originalImage.attr("src", URL.createObjectURL(uploadedImage));
+    this.originalImage.on("load", this.onImageLoad.bind(this));
+  }
+};
+
+
+Dissector.prototype.onImageLoad = function() { 
   alert("image is loaded!");
 }
